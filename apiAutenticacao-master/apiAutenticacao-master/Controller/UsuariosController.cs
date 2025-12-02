@@ -17,8 +17,8 @@ namespace apiAutenticacao.Controllers
         private readonly AppDbContext _context;
         private readonly AuthService _authService;
 
-        public UsuariosController(AppDbContext context, AuthService authservice) { 
-        
+        public UsuariosController(AppDbContext context, AuthService authservice) {
+
             _context = context;
             _authService = authservice;
 
@@ -41,7 +41,7 @@ namespace apiAutenticacao.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login ([FromBody] LoginDTO dadosUsuario) {
+        public async Task<IActionResult> Login([FromBody] LoginDTO dadosUsuario) {
 
             if (!ModelState.IsValid)
             {
@@ -50,14 +50,30 @@ namespace apiAutenticacao.Controllers
             ResponseLogin response = await _authService.Login(dadosUsuario);
 
             if (response.Erro)
-                {
-                    return BadRequest(response.Mesage);
-                };
-
-                return Ok(response);
+            {
+                return BadRequest(response);
             }
+
+            return Ok(response);
         }
 
+        [HttpPut("alterarsenha")]
+        public async Task<IActionResult> AlterarSenha([FromBody] AlterarSenhaDTO dadosUsuario)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+                
+            var response = await _authService.AlterarSenhaAsync(dadosUsuario);
 
-        
+            if (response.Erro)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
     }
+}
