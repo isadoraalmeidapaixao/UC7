@@ -151,6 +151,7 @@ namespace apiAutenticacao.Services
                     Erro = true,
                     Mesage = "Erro ao alterar senha: ",
                     Usuario = null
+
                 };
             }
         }
