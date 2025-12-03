@@ -39,7 +39,6 @@ namespace apiAutenticacao.Services
                 {
                     Erro = true,
                     Mesage = "Login não realizado.",
-                    Usuario = null
                 };
 
             }
@@ -96,17 +95,17 @@ namespace apiAutenticacao.Services
             };
 
         }
-        public async Task<ResponseCadastro> AlterarSenhaAsync(AlterarSenhaDTO dadosAlterarSenha)
+        public async Task<ResponseAlteracaoSenha> AlterarSenhaAsync(AlterarSenhaDTO dadosAlterarSenha)
         {
             try
             {
-                // busca o usuário
+
                 Usuario? usuarioExistente = await _context.Usuarios
                     .FirstOrDefaultAsync(usuario => usuario.Email == dadosAlterarSenha.Email);
 
                 if (usuarioExistente == null)
                 {
-                    return new ResponseCadastro
+                    return new ResponseAlteracaoSenha
                     {
                         Erro = true,
                         Mesage = "Este email não está cadastrado.",
@@ -114,12 +113,12 @@ namespace apiAutenticacao.Services
                     };
                 }
 
-                // verifica se o usuário sabe a senha atual
+
                 bool senhaCorreta = Verify(dadosAlterarSenha.SenhaAtual, usuarioExistente.Senha);
 
                 if (!senhaCorreta)
                 {
-                    return new ResponseCadastro
+                    return new ResponseAlteracaoSenha
                     {
                         Erro = true,
                         Mesage = "Senha atual incorreta.",
@@ -127,17 +126,17 @@ namespace apiAutenticacao.Services
                     };
                 }
 
-                // nova senha Hash
+
                 string novaSenhaHash = HashPassword(dadosAlterarSenha.NovaSenha);
 
-                // atualiza o banco
+
                 usuarioExistente.Senha = novaSenhaHash;
 
                 _context.Usuarios.Update(usuarioExistente);
                 await _context.SaveChangesAsync();
 
-                // alteracao concluida
-                return new ResponseCadastro
+
+                return new ResponseAlteracaoSenha
                 {
                     Erro = false,
                     Mesage = "Senha alterada com sucesso!",
@@ -146,7 +145,7 @@ namespace apiAutenticacao.Services
             }
             catch (Exception)
             {
-                return new ResponseCadastro
+                return new ResponseAlteracaoSenha
                 {
                     Erro = true,
                     Mesage = "Erro ao alterar senha: ",

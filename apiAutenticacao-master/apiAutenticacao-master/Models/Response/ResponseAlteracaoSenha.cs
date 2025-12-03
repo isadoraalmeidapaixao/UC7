@@ -2,7 +2,7 @@
 
 namespace apiAutenticacao.Models.Response
 {
-    public class ResponseLogin : ResponseDTO
+    public class ResponseAlteracaoSenha : ResponseDTO
     {
     }
 }
