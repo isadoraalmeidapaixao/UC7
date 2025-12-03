@@ -100,7 +100,7 @@ namespace apiAutenticacao.Services
         {
             try
             {
-                // busca o usuário
+
                 Usuario? usuarioExistente = await _context.Usuarios
                     .FirstOrDefaultAsync(usuario => usuario.Email == dadosAlterarSenha.Email);
 
@@ -114,7 +114,7 @@ namespace apiAutenticacao.Services
                     };
                 }
 
-                // verifica se o usuário sabe a senha atual
+
                 bool senhaCorreta = Verify(dadosAlterarSenha.SenhaAtual, usuarioExistente.Senha);
 
                 if (!senhaCorreta)
@@ -127,16 +127,16 @@ namespace apiAutenticacao.Services
                     };
                 }
 
-                // nova senha Hash
+
                 string novaSenhaHash = HashPassword(dadosAlterarSenha.NovaSenha);
 
-                // atualiza o banco
+
                 usuarioExistente.Senha = novaSenhaHash;
 
                 _context.Usuarios.Update(usuarioExistente);
                 await _context.SaveChangesAsync();
 
-                // alteracao concluida
+
                 return new ResponseCadastro
                 {
                     Erro = false,
