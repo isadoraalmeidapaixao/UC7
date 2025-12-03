@@ -39,7 +39,6 @@ namespace apiAutenticacao.Services
                 {
                     Erro = true,
                     Mesage = "Login não realizado.",
-                    Usuario = null
                 };
 
             }
@@ -96,7 +95,7 @@ namespace apiAutenticacao.Services
             };
 
         }
-        public async Task<ResponseCadastro> AlterarSenhaAsync(AlterarSenhaDTO dadosAlterarSenha)
+        public async Task<ResponseAlteracaoSenha> AlterarSenhaAsync(AlterarSenhaDTO dadosAlterarSenha)
         {
             try
             {
@@ -106,7 +105,7 @@ namespace apiAutenticacao.Services
 
                 if (usuarioExistente == null)
                 {
-                    return new ResponseCadastro
+                    return new ResponseAlteracaoSenha
                     {
                         Erro = true,
                         Mesage = "Este email não está cadastrado.",
@@ -119,7 +118,7 @@ namespace apiAutenticacao.Services
 
                 if (!senhaCorreta)
                 {
-                    return new ResponseCadastro
+                    return new ResponseAlteracaoSenha
                     {
                         Erro = true,
                         Mesage = "Senha atual incorreta.",
@@ -137,7 +136,7 @@ namespace apiAutenticacao.Services
                 await _context.SaveChangesAsync();
 
 
-                return new ResponseCadastro
+                return new ResponseAlteracaoSenha
                 {
                     Erro = false,
                     Mesage = "Senha alterada com sucesso!",
@@ -146,7 +145,7 @@ namespace apiAutenticacao.Services
             }
             catch (Exception)
             {
-                return new ResponseCadastro
+                return new ResponseAlteracaoSenha
                 {
                     Erro = true,
                     Mesage = "Erro ao alterar senha: ",
